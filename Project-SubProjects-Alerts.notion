@@ -1,0 +1,68 @@
+/* v4.1 - RC
+oem at oemden dot com
+- All Cases [OK & KO] Covered !
+- Option to Display Only Errors or All Messages
+- nested if()
+
+To display:
+		• ONLY [KO] Status, set ALL_Cases to empty ""
+		• ALL Status [KO & OK], set ALL_Cases to "ALL"
+*/
+
+lets (
+
+	 ALL_Cases,
+	"",
+
+	Projet_sans_sub_sans_Task, /* Case1 */
+	prop("Sub-item").empty() and prop("Tasks").empty() and prop("Parent item").empty(),
+
+	Projet_sans_sub_avec_Task,  /* Case 6 */
+	prop("Sub-item").empty() and prop("Tasks").empty().not() and prop("Parent item").empty(),
+
+	Projet_avec_sub, /* intermediary */
+	prop("Sub-item").empty().not(),
+
+	Sub_sans_task, /*intermediary */
+	prop("Sub-item").filter(current.prop("Tasks").empty()),
+
+	Projet_avec_sub_sans_task,
+	Projet_avec_sub == true and Sub_sans_task == true,
+
+	ProjectSub_sans_task, /* Case 2 */
+	prop("Parent item").empty().not() and prop("Tasks").empty(),
+
+	Sub_avec_task, /* Case 3 */
+	prop("Parent item").empty().not() and prop("Tasks").empty().not(),
+
+	ifs(
+		/* Case1: Standalone Project With No Sub-Project and No Task: Alert*/
+		Projet_sans_sub_sans_Task == true, (" 🚨 This Project has No Tasks assigned ! ").style("b", "red", "red_background"),
+
+		/* Case 2: Sub-Project with No Task: Alert */
+		ProjectSub_sans_task == true, (" 🚨 This Sub-Project has No Tasks assigned ! ").style("b", "pink", "pink_background"),
+
+		/* Case 4: main Project has one or more Sub-Project with No Task assigned */
+		/* Not working ?!?
+		Projet_avec_sub_sans_task == true, (" 🚨 One or more Sub-Project has no task assigned ! ").style("b", "red", "red_background"),
+		*/
+		Projet_avec_sub == true and prop("Sub-item").filter(current.prop("Tasks").empty()), (" 🚨 One or more Sub-Project has no task assigned ! ").style("b", "red", "red_background"),
+
+		/* Display ALL Messages KO and OK */
+		if(
+			ALL_Cases == "ALL",
+
+			ifs(
+				/* Case 3: Sub Project has Tasks Assigned */
+	        Sub_avec_task == true, (" ✅ This Sub-Project has Tasks Assigned ! ").style("b", "blue", "blue_background"),
+
+        /* Case 5: Main Project has all Sub-Projects with Task assigned */
+      Projet_avec_sub == true and prop("Sub-item").filter(current.prop("Tasks").empty().not()), (" ✅ All Sub-Projects have tasks assigned! ").style("b", "green", "green_background"),
+
+        /* Case 6: Standalone Project with no sub-project AND Tasks Assigned */
+        Projet_sans_sub_avec_Task == true, (" ✅ This Project has Tasks assigned!").style("b", "green", "green_background")
+				),
+			""
+		)
+	)
+)
