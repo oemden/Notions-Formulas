@@ -1,22 +1,9 @@
-/* v5.1 - Task Version (DB)
+/* v5.2 - DB (Tasks Version)
 oem at oemden dot com
-- Needs a relation to Alert_level-DB ->
-
--> Alert_level-DB:
-			|Alert_level(Name)|Setting(Select)|Description(text - optionnal)|
-			|Projects|All Alerts|Displays All Messages [KO + OK]
-
-Settings is a 'Select' Property with 3 'Options':
-• All Alerts
-• Alerts
-• No Alerts
-
-To display:
-		• ONLY [KO] Status, set Option to empty "Alerts"
-		• ALL Status [KO & OK], set ALL_Cases to "All Alerts"
-		• No Status [KO & OK], set ALL_Cases to "No Alerts"
+- Needs a relation to Alert_level-DB
 */
 
+/* ---- lets start -----	*/
 lets (
 
 	 ALL_Cases,
@@ -55,11 +42,26 @@ lets (
 	Alert_Settings_std,
 	Alert_Settings == "Alerts",
 
-	/*
-	Show Alerts == "No Alerts" -> nothing
-	Show Alerts == "ALL" -> ALL Alerts KO & OK
-	Show Alerts == "Alerts" -> Just KO
-	*/
+		Case1Alert,
+	" 🚨 This Task has No Project assigned ! ",
+
+	Case2Alert,
+	" 🚨 This Sub-Task has No Project assigned ! ",
+
+	Case3Alert,
+	" ✅ This Sub-Task has Project Assigned ! ",
+
+	Case4Alert,
+	" 🚨 One or more Sub-Task has no Project assigned ! ",
+
+	Case5Alert,
+	" ✅ All Sub-Tasks have Project assigned! ",
+
+	Case6Alert,
+	" ✅ This Task has Project assigned!",
+
+	/* ---- Conditions start -----	*/
+
 
 	ifs( /* if1 */
 		Alert_Settings_none,
@@ -68,36 +70,38 @@ lets (
 		Alert_Settings_all,
 			ifs(
 				/* Case1: Standalone Task With No Sub-Task and No Task: Alert*/
-				Task_sans_sub_sans_Project == true, (" 🚨 This Task has No Project assigned ! ").style("b", "red", "red_background"),
+				Task_sans_sub_sans_Project == true, Case1Alert.style("b", "red", "red_background"),
 
 				/* Case 2: Sub-Task with No Task: Alert */
-				TaskSub_sans_Project == true, (" 🚨 This Sub-Task has No Project assigned ! ").style("b", "pink", "pink_background"),
+				TaskSub_sans_Project == true, Case2Alert.style("b", "pink", "pink_background"),
 
 				/* Case 4: main Task has one or more Sub-Task with No Task assigned */
-				Task_avec_sub == true and prop("Sub-task").filter(current.prop("Projects").empty()), (" 🚨 One or more Sub-Task has no Project assigned ! ").style("b", "red", "red_background"),
+				Task_avec_sub == true and prop("Sub-task").filter(current.prop("Projects").empty()), Case4Alert.style("b", "red", "red_background"),
 
 				/* Case 3: Sub Task has Project Assigned */
-        Sub_avec_Project == true, (" ✅ This Sub-Task has Project Assigned ! ").style("b", "blue", "blue_background"),
+        Sub_avec_Project == true, Case3Alert.style("b", "blue", "blue_background"),
 
       	/* Case 5: Main Task has all Sub-Tasks with Task assigned */
-    		Task_avec_sub == true and prop("Sub-task").filter(current.prop("Projects").empty().not()), (" ✅ All Sub-Tasks have Project assigned! ").style("b", "green", "green_background"),
+    		Task_avec_sub == true and prop("Sub-task").filter(current.prop("Projects").empty().not()), Case5Alert.style("b", "green", "green_background"),
 
     		/* Case 6: Standalone Task with no sub-Task AND Project Assigned */
-    		Task_sans_sub_avec_Project == true, (" ✅ This Task has Project assigned!").style("b", "green", "green_background")
+    		Task_sans_sub_avec_Project == true, Case6Alert.style("b", "green", "green_background")
 			),
 
 		Alert_Settings_std,
 			ifs(
 					/* Case1: Standalone Task With No Sub-Task and No Task: Alert*/
-					Task_sans_sub_sans_Project == true, (" 🚨 This Task has No Project assigned ! ").style("b", "red", "red_background"),
+					Task_sans_sub_sans_Project == true, Case1Alert.style("b", "red", "red_background"),
 
 					/* Case 2: Sub-Task with No Task: Alert */
-					TaskSub_sans_Project == true, (" 🚨 This Sub-Task has No Project assigned ! ").style("b", "pink", "pink_background"),
+					TaskSub_sans_Project == true, Case2Alert.style("b", "pink", "pink_background"),
 
 					/* Case 4: main Task has one or more Sub-Task with No Task assigned */
-					Task_avec_sub == true and prop("Sub-task").filter(current.prop("Projects").empty()), (" 🚨 One or more Sub-Task has no Project assigned ! ").style("b", "red", "red_background")
+					Task_avec_sub == true and prop("Sub-task").filter(current.prop("Projects").empty()), Case4Alert.style("b", "red", "red_background")
 				)
 
 
-		) /* if1 */
+		)
+	/* ---- Conditions end -----	*/
 )
+/* ---- lets end -----	*/
