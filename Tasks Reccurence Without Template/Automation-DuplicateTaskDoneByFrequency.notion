@@ -1,0 +1,22 @@
+ifs(
+	prop(Trigger page).prop(Reccurent Frequency).=="Daily",
+		ifs(
+			/* If we're friday, move to Next Monday */
+			prop(Trigger page).prop(Due Date).day()==5,
+				prop(Trigger page).prop(Due Date).dateAdd(3,"days"),
+			/* If we're saturday, move to Next Monday */
+			prop(Trigger page).prop(Due Date).day()==6,
+				prop(Trigger page).prop(Due Date).dateAdd(2,"days"),
+			/* Otherwise just add 1 day */
+			prop(Trigger page).prop(Due Date).dateAdd(1,"days")
+			),
+
+	prop(Trigger page).prop(Reccurent Frequency).=="Weekly",
+			prop(Trigger page).prop(Due Date).dateAdd(1,"weeks"),
+
+	prop(Trigger page).prop(Reccurent Frequency).=="Monthly",
+			prop(Trigger page).prop(Due Date).dateAdd(1,"months"),
+
+	prop(Trigger page).prop(Reccurent Frequency).=="Yearly",
+			prop(Trigger page).prop(Due Date).dateAdd(1,"Year")
+	)

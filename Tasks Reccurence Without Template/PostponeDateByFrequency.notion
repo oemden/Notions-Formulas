@@ -1,0 +1,27 @@
+ifs(
+	prop(This page).prop(Reccurent Frequency)=="Daily",
+	ifs(
+				/* If we're friday, move to Next Monday */
+			prop(This page).prop(Due Date).day()==5,
+				prop(This page).prop(Due Date).dateAdd(3,"days"),
+			/* If we're saturday, move to Next Monday */
+			prop(This page).prop(Due Date).day()==6,
+				prop(This page).prop(Due Date).dateAdd(2,"days"),
+			/* Otherwise just add 1 day */
+			prop(This page).prop(Due Date).dateAdd(1,"days")
+		),
+
+	prop(This page).prop(Reccurent Frequency)=="Weekly",
+		prop(This page).prop(Due Date).dateAdd(1,"weeks"),
+
+	prop(This page).prop(Reccurent Frequency)=="Monthly",
+		prop(This page).prop(Due Date).dateAdd(1,"months"),
+
+	prop(This page).prop(Reccurent Frequency)=="Yearly",
+		prop(This page).prop(Due Date).dateAdd(1,"Year"),
+
+	/* Fallback case: if Recurrent Frequency is empty,
+	keep Due Date as is, with same Time*/
+    true,
+    prop(This page).prop(Due Date).dateAdd(0, "days")
+	)
