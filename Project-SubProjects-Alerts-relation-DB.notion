@@ -1,6 +1,20 @@
-/* v5.1 - RC
+/* v5.1 - (DB)
 oem at oemden dot com
-- Needs a relation to Alert_level-DB
+- Needs a relation to Alert_level-DB ->
+
+-> Alert_level-DB:
+			|Alert_level(Name)|Setting(Select)|Description(text - optionnal)|
+			|Projects|All Alerts|Displays All Messages [KO + OK]
+
+Settings is a 'Select' Property with 3 'Options':
+• All Alerts
+• Alerts
+• No Alerts
+
+To display:
+		• ONLY [KO] Status, set Option to empty "Alerts"
+		• ALL Status [KO & OK], set ALL_Cases to "All Alerts"
+		• No Status [KO & OK], set ALL_Cases to "No Alerts"
 */
 
 lets (
@@ -30,7 +44,7 @@ lets (
 	prop("Parent item").empty().not() and prop("Tasks").empty().not(),
 
 	Alert_Settings,
-	prop("Alerts-DB").map(current.prop("Setting")).format(),
+	prop("Alerts Level").map(current.prop("Setting")).format(),
 
 	Alert_Settings_none,
 	Alert_Settings == "No Alerts",
