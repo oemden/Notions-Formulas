@@ -17,38 +17,38 @@ And eventually duplicate a Task Manually, Roughly speaking, this is the same res
 There are many possible variations, it's up to you to adapt.
 
 
-<img src="../pics/Automate-DuplicateTaskDoneFrequency.png" width="900" >
+<img src="../pics/ReccuringTaskNoTemplate.png" width="900" >
 
 
 
-## Assign Task for Today
+## Button - Assign Task for Today
 
 No formulas needed.
 
 <img src="../pics/AssignForToday.png" width="350" >
 
 
-## Duplicate Task for Today
+## Button - Duplicate Task for Today
 
 No formulas needed:
 
 <img src="../pics/DuplicateForToday.png" width="350" >
 
 
-## Postpone Date, by Frequency
+## Button - Postpone Date, by Frequency
 
 [Formula: PostponeDateByFrequency.notion](./PostponeDateByFrequency.notion)
 
 <img src="../pics/PostponeDateFromFrequency.png" width="350" >
 
-## Duplicate Task, by Frequency
+## Button - Duplicate Task, by Frequency
 
 [Formula: DuplicateTaskByFrequency.notion](./DuplicateTaskByFrequency.notion):
 
 <img src="../pics/DuplicateTaskByFrequency.png" width="350" >
 
-## Auto - Duplicate Task "Done", by Frequency
+## Automation - Duplicate Task "Done", by Frequency
 
 [Formula: Automation-DuplicateTaskDoneByFrequency.notion](./Automation-DuplicateTaskDoneByFrequency.notion)
 
-<img src="../pics/Automate-DuplicateTaskDoneFrequency.png" width="350" >
+<img src="../pics/Automation-DuplicateTaskDoneFrequency.png" width="350" >
